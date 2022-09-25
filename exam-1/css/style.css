@@ -593,6 +593,7 @@ nav {
     background-color: var(--second-bg);
 }
 
+
 .carousel-indicators [data-bs-target] {
     box-sizing: content-box;
     flex: 0 1 auto;
@@ -656,46 +657,72 @@ nav {
     text-align: center;
 }
 
-/* portfolio */
-
-
-/* contact */
-/* .contact-us {
-    margin-bottom: 50px;
+.portfolio .images {
+    position: relative;
+    overflow: hidden;
 }
 
-.contact-us .info {
+.portfolio .item-img-overlay {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    background: rgba(255, 255, 255, 0.95);
+    opacity: 0;
+    transition: all .5s;
+    z-index: 2;
+    transform: translateY(10px);
+}
+
+.portfolio .images:hover .item-img-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio .overlay-info {
+    position: absolute;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    top: 50%;
+    left: 0;
+    transform: translate(0%, -50%);
 }
 
-.contact-us .info .item .icon {
-    display: inline-block;
-    font-size: 20px;
+.portfolio .images h6 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    position: relative;
     margin-bottom: 15px;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    background: #f4f4f4;
+    transition: all .5s;
+}
+
+.portfolio .images:hover h6 {
+    transform: translateY(0);
+}
+
+.portfolio .images:hover h6,
+.portfolio .images:hover .icons {
+    transform: translateY(0);
+}
+
+.portfolio .images .icon i {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 28px;
     border-radius: 50%;
+    border: 1px solid #111;
+    background: #111;
+    color: #eee;
 }
 
-.contact-us .info span {
-    transition-duration: .5s;
+.portfolio .images .icon i:hover {
+    background: transparent;
+    color: #111;
 }
 
-.contact-us .info .item:hover i {
-    color: var(--text-color);
-}
-
-.contact-us .info .item:hover span {
-    background-color: var(--main-color) !important;
-} */
-
-/* contact */
-
+/* portfolio */
 
 /* contact new */
 
