@@ -48,8 +48,11 @@ body {
     position: absolute;
     display: flex;
     flex-direction: column;
-    top: 30px;
+    top: 0;
     left: 20px;
+    /* background-color: tomato; */
+    height: 80%;
+    width: 80%;
 }
 
 .side-bottom {
@@ -70,12 +73,22 @@ body {
 .sidebar-top a {
     font-size: 16px;
     color: #fff;
-    padding: 15px !important;
+    padding-top: 20px !important;
+    padding-left: 15px !important;
     text-decoration: none;
 }
 
 #iconBtn {
     cursor: pointer;
+}
+
+.side-title1,
+.side-title2,
+.side-title3,
+.side-title4,
+.side-title5,
+.side-title6 {
+    padding-top: 20px;
 }
 
 /* side-bar section*/
