@@ -1,4 +1,4 @@
-// side-bar slider
+// Side-bar Slider
 
 $("#iconBtn").click(function () {
   let boxWidth = $(".side-bar").outerWidth();
@@ -8,5 +8,3 @@ $("#iconBtn").click(function () {
     $(".side-bar").animate({ left: "0px" }, 500);
   }
 });
-
-// side-bar slider
