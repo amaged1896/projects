@@ -147,7 +147,7 @@ body {
     border: none;
     border-bottom: 1px solid rgba(255, 255, 255, .7);
     border-radius: 0;
-    color: #fff;
+    color: #495057;
     font-weight: 400;
     font-size: 1rem;
     box-shadow: 0 .5rem 1rem rgba(255, 255, 255, .2) !important;
@@ -155,7 +155,15 @@ body {
 
 .contact-input:focus {
     background-color: transparent !important;
+    color: #495057;
     border-bottom-color: rgba(255, 255, 255, .7);
 }
 
 /* contact page */
+
+/* search page */
+.box-none {
+    box-shadow: none !important;
+}
+
+/* search page */
