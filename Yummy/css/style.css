@@ -238,3 +238,22 @@ body {
 }
 
 /* Ingredients page */
+
+/* Area page */
+.area {
+    padding: 0 !important;
+    margin: 0 !important;
+    /* background-color: #fff; */
+}
+
+.area-img h2 {
+    padding-top: 5px;
+    color: #fff;
+    font-weight: 200 !important;
+}
+
+.fa-city {
+    color: #e65a50ab !important;
+}
+
+/* Area page */
