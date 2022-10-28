@@ -112,7 +112,7 @@ body {
     align-items: center;
     font-size: 26px;
     color: #000;
-    transition-duration: 1.5s !important;
+    transition-duration: 1s !important;
     padding-left: 10px;
 }
 
@@ -135,3 +135,27 @@ body {
 }
 
 /* home page */
+
+/* contact page */
+.contact-headding {
+    color: #f8f9fa !important;
+    font-weight: 200 !important;
+}
+
+.contact-input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, .7);
+    border-radius: 0;
+    color: #fff;
+    font-weight: 400;
+    font-size: 1rem;
+    box-shadow: 0 .5rem 1rem rgba(255, 255, 255, .2) !important;
+}
+
+.contact-input:focus {
+    background-color: transparent !important;
+    border-bottom-color: rgba(255, 255, 255, .7);
+}
+
+/* contact page */
