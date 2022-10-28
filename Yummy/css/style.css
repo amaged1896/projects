@@ -213,23 +213,28 @@ body {
 
 /* categories page */
 
-
-/* 
-
-.img-caption i {
-    color: #eee;
+/* Ingredients page */
+.card {
+    background-color: transparent !important;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 0 30px;
 }
 
-.img-caption i:hover {
-    color: #ff305b !important;
+.card .card-body h2 {
+    font-weight: 300 !important;
 }
 
-.over-flow {
-    position: relative !important;
-    overflow: hidden !important;
+.fa-bowl-food {
+    color: #9ee650ab;
 }
 
-.over-flow:hover .img-caption {
-    overflow: visible !important;
-    top: 0 !important;
-} */
+.ingredients-row {
+    margin-top: 150px;
+}
+
+/* Ingredients page */
