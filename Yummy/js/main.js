@@ -72,6 +72,31 @@ getAreaData().then((apiDataArea) => {
 });
 getAreaData();
 
+// Display Area Data
+console.log(areaContainer);
+function displayArea() {
+  let area = "";
+  for (let i = 0; i < areaContainer.length; i++) {
+    // console.log(arrayContainer[i].categories);
+    for (let j = 0; j < 20; j++) {
+      // console.log(arrayContainer[i].categories[j]);
+      area += `
+      <div class=" col-md-6 col-lg-3 ">
+      <div class="meal-photo">
+          <div class="my-img">
+              <div class="area-img over-flow">
+                  <i class="fa-solid fa-city fa-3x"></i>
+                  <h2>${areaContainer[i].meals[j].strArea}</h2>
+              </div>
+          </div>
+      </div>
+  </div>
+                  `;
+    }
+  }
+  row.innerHTML = area;
+}
+
 // Side-bar Slider
 $("#iconBtn").click(function () {
   let boxWidth = $(".side-bar").outerWidth();
