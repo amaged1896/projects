@@ -1,7 +1,9 @@
-var arrayContainer = [];
-var row = document.getElementById("rowData");
+let arrayContainer = [],
+  areaContainer = [];
 
-// Get Data From API
+let row = document.getElementById("rowData");
+
+// Get Data From API For Display Categories
 async function getDataFromApi() {
   apiResponse = await fetch(
     "https:www.themealdb.com/api/json/v1/1/categories.php"
@@ -50,11 +52,25 @@ function displayCategories() {
                           </div>
                       </div>
                   </div>
-                `;
+                  `;
     }
   }
   row.innerHTML = box;
 }
+
+// Get Data From API For Area
+async function getAreaData() {
+  apiArea = await fetch(
+    "https://www.themealdb.com/api/json/v1/1/list.php?a=list"
+  );
+  apiDataArea = await apiArea.json();
+  return apiDataArea;
+}
+getAreaData().then((apiDataArea) => {
+  areaContainer.push(apiDataArea);
+  displayArea();
+});
+getAreaData();
 
 // Side-bar Slider
 $("#iconBtn").click(function () {
