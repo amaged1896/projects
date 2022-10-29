@@ -11,10 +11,52 @@ async function getDataFromApi() {
 }
 getDataFromApi().then((apiData) => {
   arrayContainer.push(apiData);
+  displayCategories();
 });
 
-// Side-bar Slider
+// Display Categories
+function displayCategories() {
+  let box = "";
+  for (let i = 0; i < arrayContainer.length; i++) {
+    // console.log(arrayContainer[i].categories);
+    for (let j = 0; j < arrayContainer[i].categories.length; j++) {
+      // console.log(arrayContainer[i].categories[j]);
+      box += `
+                  <div class="meal col-md-6 col-lg-3 ">
+                      <div class="meal-photo">
+                          <div class="my-img">
+                              <div class="over-flow">
+                                  <img class="rounded" src="${
+                                    arrayContainer[i].categories[j]
+                                      .strCategoryThumb
+                                  }" alt="" />
+                                  <div class="categories-img-caption">
+                                      <div class="title w-20">
+                                          ${
+                                            arrayContainer[i].categories[j]
+                                              .strCategory
+                                          }
+                                      </div>
+                                      <div class="desc w-80">
+                                          <p>${arrayContainer[i].categories[
+                                            j
+                                          ].strCategoryDescription
+                                            .split(" ")
+                                            .slice(0, 20)
+                                            .join(" ")}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                `;
+    }
+  }
+  row.innerHTML = box;
+}
 
+// Side-bar Slider
 $("#iconBtn").click(function () {
   let boxWidth = $(".side-bar").outerWidth();
   if ($(".side-bar").css("left") == "0px") {
