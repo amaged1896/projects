@@ -1,3 +1,18 @@
+var arrayContainer = [];
+var row = document.getElementById("rowData");
+
+// Get Data From API
+async function getDataFromApi() {
+  apiResponse = await fetch(
+    "https:www.themealdb.com/api/json/v1/1/categories.php"
+  );
+  apiData = await apiResponse.json();
+  return apiData;
+}
+getDataFromApi().then((apiData) => {
+  arrayContainer.push(apiData);
+});
+
 // Side-bar Slider
 
 $("#iconBtn").click(function () {
