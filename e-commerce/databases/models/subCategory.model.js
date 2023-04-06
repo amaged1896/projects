@@ -13,7 +13,7 @@ const subCategorySchema = mongoose.Schema({
         lowercase: true,
         required: true,
     },
-    categoryId: {
+    category: {
         type: mongoose.Types.ObjectId,
         ref: 'category'
     },
