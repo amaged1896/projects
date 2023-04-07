@@ -4,6 +4,7 @@ import { connection } from './databases/connection.js';
 import categoryRouter from './src/modules/category/category.router.js';
 import morgan from 'morgan';
 import { AppError } from './src/utlis/AppError.js';
+import { globalErrorMiddleware } from './src/middleware/globalErrorMiddleware.js';
 dotenv.config();
 const app = express();
 const port = 8000;
@@ -19,10 +20,7 @@ app.use('*', (req, res, next) => {
 });
 
 // global error handling middleware
-app.use((err, req, res, next) => {
-    const statusCode = err.statusCode || 500;
-    res.status(500).json({ error: err.message, statusCode });
-});
+app.use(globalErrorMiddleware);
 connection();
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 

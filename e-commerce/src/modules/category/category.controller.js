@@ -1,15 +1,6 @@
-import mongoose from "mongoose";
 import { categoryModel } from './../../../databases/models/category.model.js';
 import slugify from "slugify";
-
-
-const catchAsyncError = (fn) => {
-    return (req, res, next) => {
-        fn(req, res, next).catch((error) => {
-            next(error);
-        });
-    };
-};
+import { catchAsyncError } from "../../middleware/catchAsyncError.js";
 
 const createCategory = catchAsyncError(async (req, res, next) => {
     const { name } = req.body;
@@ -26,23 +17,23 @@ const getAllCategories = catchAsyncError(async (req, res, next) => {
 const getCategory = catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
     let result = await categoryModel.findById(id);
-    if (!result) return next(new AppError(`category not found`, 404));
-    res.status(201).json({ message: "success", data: result });
+    !result && next(new AppError(`category not found`, 404));
+    result && res.status(201).json({ message: "success", data: result });
 });
 
 const updateCategory = catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
     const { name } = req.body;
     let result = await categoryModel.findByIdAndUpdate(id, { name, slug: slugify(name) }, { new: true });
-    if (!result) return next(new AppError(`category not found`, 404));
-    res.status(201).json({ message: "success", data: result });
+    !result && next(new AppError(`category not found`, 404));
+    result && res.status(201).json({ message: "success", data: result });
 });
 
 const deleteCategory = catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
     let result = await categoryModel.findByIdAndDelete(id);
-    if (!result) return next(new AppError(`category not found`, 404));
-    res.status(201).json({ message: "success", data: result });
+    !result && next(new AppError(`category not found`, 404));
+    result && res.status(201).json({ message: "success", data: result });
 });
 
 export {
