@@ -1,6 +1,6 @@
 import express from 'express';
 import * as subCategory from './subCategory.controller.js';
-const subCategoryRouter = express.Router();
+const subCategoryRouter = express.Router({ mergeParams: true });
 
 subCategoryRouter
     .route('/')
