@@ -12,6 +12,8 @@ const port = 8000;
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api/v1/categories', categoryRouter);
+
+// unhandled routes
 app.use('*', (req, res, next) => {
     next(new AppError(`Can't find this route : ${req.originalUrl}`, 404));
 });
@@ -23,3 +25,8 @@ app.use((err, req, res, next) => {
 });
 connection();
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+// unhandled rejection
+process.on('unhandledRejection', (err) => {
+    console.log('unhandledRejection', err);
+});
