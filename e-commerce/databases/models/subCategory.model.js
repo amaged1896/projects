@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const subCategorySchema = mongoose.Schema({
     name: {
@@ -11,12 +12,16 @@ const subCategorySchema = mongoose.Schema({
     slug: {
         type: String,
         lowercase: true,
-        required: true,
     },
     category: {
         type: mongoose.Types.ObjectId,
         ref: 'category'
     },
 }, { timestamps: true });
+
+subCategorySchema.pre('save', function (next) {
+    this.slug = slugify(this.name);
+    next();
+});
 
 export const subCategoryModel = mongoose.model('subCategory', subCategorySchema);

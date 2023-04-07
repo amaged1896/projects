@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const brandSchema = mongoose.Schema({
     name: {
@@ -10,9 +11,13 @@ const brandSchema = mongoose.Schema({
     }, slug: {
         type: String,
         lowercase: true,
-        required: true,
     },
     logo: String,
 }, { timestamps: true });
+
+brandSchema.pre('save', function (next) {
+    this.slug = slugify(this.name);
+    next();
+});
 
 export const brandModel = mongoose.model('brand', brandSchema);

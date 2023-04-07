@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const productSchema = mongoose.Schema({
     title: {
@@ -11,7 +12,6 @@ const productSchema = mongoose.Schema({
     slug: {
         type: String,
         lowercase: true,
-        required: true,
     },
     price: {
         type: Number,
@@ -68,5 +68,10 @@ const productSchema = mongoose.Schema({
         required: [true, 'product brand is required'],
     }
 }, { timestamps: true });
+
+productSchema.pre('save', function (next) {
+    this.slug = slugify(this.name);
+    next();
+});
 
 export const productModel = mongoose.model('product', productSchema);
