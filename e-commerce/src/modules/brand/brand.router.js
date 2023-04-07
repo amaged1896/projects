@@ -4,11 +4,11 @@ const brandRouter = express.Router();
 
 brandRouter
     .route('/')
-    .post('/brand', brand.createBrand)
-    .get('/brand', brand.createBrand);
+    .post(brand.createBrand)
+    .get(brand.getAllBrands);
 
 brandRouter
-    .route(':id')
+    .route('/:id')
     .get(brand.getBrand)
     .put(brand.updateBrand)
     .delete(brand.deleteBrand);
