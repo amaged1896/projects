@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import { AppError } from './src/utlis/AppError.js';
 import { globalErrorMiddleware } from './src/middleware/globalErrorMiddleware.js';
 import subCategoryRouter from './src/modules/subCategory/subCategory.router.js';
+import brandRouter from './src/modules/brand/brand.router.js';
 dotenv.config();
 const app = express();
 const port = 8000;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/subcategories', subCategoryRouter);
+app.use('/api/v1/brands', brandRouter);
 
 // unhandled routes
 app.use('*', (req, res, next) => {
