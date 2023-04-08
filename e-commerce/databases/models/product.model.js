@@ -70,7 +70,7 @@ const productSchema = mongoose.Schema({
 }, { timestamps: true });
 
 productSchema.pre('save', function (next) {
-    this.slug = slugify(this.name);
+    this.slug = slugify(this.title);
     next();
 });
 
