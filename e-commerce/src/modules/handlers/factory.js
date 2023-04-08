@@ -19,15 +19,13 @@ const getOne = (model) => {
     });
 };
 
-const updateOne = (model) => {
-    return catchAsyncError(async (req, res, next) => {
-        const result = await model.findById(req.params.id);
-        !result && next(new AppError('Document not found', 404));
-        result.name = req.body.name;
-        await result.save();
-        result && res.status(200).json({ message: "success", data: result });
-    });
-};
+const updateOne = (model) => catchAsyncError(async (req, res, next) => {
+    let result = await model.findById(req.params.id);
+    !result && next(new AppError('Document not found', 404));
+    Object.assign(result, req.body);
+    await result.save();
+    res.status(200).json({ message: 'success', data: result });
+});
 
 const getAll = (model) => {
     return catchAsyncError(async (req, res, next) => {
