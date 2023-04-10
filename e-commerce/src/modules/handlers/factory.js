@@ -4,6 +4,7 @@ import { AppError } from './../../utlis/AppError.js';
 
 const createOne = (model) => {
     return catchAsyncError(async (req, res, next) => {
+        req.body.image = req.file.filename;
         let result = new model(req.body);
         await result.save();
         if (!result) return next(new AppError('Invalid category', 404));
@@ -21,6 +22,7 @@ const getOne = (model) => {
 };
 
 const updateOne = (model) => catchAsyncError(async (req, res, next) => {
+    req.body.image = req.file.filename;
     let result = await model.findById(req.params.id);
     !result && next(new AppError('Document not found', 404));
     Object.assign(result, req.body);

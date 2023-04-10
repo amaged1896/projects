@@ -3,12 +3,13 @@ import * as categoryControllers from './category.controller.js';
 import subCategoryRouter from '../subCategory/subCategory.router.js';
 import { validation } from '../../middleware/validation.js';
 import { categorySchema, updateCategory, getCategory } from './category.validation.js';
+import { uploadSingleFile } from '../../middleware/fileUpload.js';
 const categoryRouter = express.Router();
 
 categoryRouter.use('/:categoryId/subcategories', subCategoryRouter);
 categoryRouter
     .route('/')
-    .post(validation(categorySchema), categoryControllers.createCategory)
+    .post(uploadSingleFile('image', 'category'), validation(categorySchema), categoryControllers.createCategory)
     .get(categoryControllers.getAllCategories);
 
 categoryRouter
