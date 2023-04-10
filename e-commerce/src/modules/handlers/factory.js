@@ -31,9 +31,53 @@ const getAll = (model) => {
     return catchAsyncError(async (req, res, next) => {
         let filter = {};
         if (req.params.categoryId) filter = { category: req.params.categoryId };
-        let result = await model.find(filter);
+        // 1) pagination
+
+        let page = req.query.page || 1;
+        if (req.query.page <= 0) page = 1;
+        let skip = (page - 1) * 5;
+        // 2) filtration
+
+        let filterdObject = { ...req.query };
+        let excludedQuery = ['page', 'sort', 'fields', 'keyword'];
+        excludedQuery.forEach((query) => delete filterdObject[query]);
+        console.log(filterdObject);
+
+        filterdObject = JSON.stringify(filterdObject);
+        filterdObject = filterdObject.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
+        filterdObject = JSON.parse(filterdObject);
+        console.log(filterdObject);
+        // build query
+        let mongooseQuery = model.find(filterdObject).skip(skip).limit(5);
+        // 3) sort
+
+        if (req.query.sort) {
+            console.log(req.query.sort);
+            let sortedBy = req.query.sort.split(',').join(' ');
+            console.log(sortedBy);
+            mongooseQuery.sort(req.query.sort);
+        }
+
+        // 3) search
+        if (req.query.keyword) {
+            mongooseQuery.find({
+                $or: [
+                    { title: { $regex: req.query.keyword, $options: 'i' } },
+                    { description: { $regex: req.query.keyword, $options: 'i' } },]
+            });
+        }
+        // 5) selected fields
+        if (req.query.fields) {
+            console.log(req.query.fields);
+            let fields = req.query.fields.split(',').join(' ');
+            console.log(fields);
+            mongooseQuery.select(fields);
+        }
+
+        // execute query
+        let result = await mongooseQuery;
         !result && next(new AppError('Document not found', 404));
-        result && res.status(201).json({ message: "success", data: result });
+        result && res.status(201).json({ message: "success", page, data: result });
     });
 };
 
