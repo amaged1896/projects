@@ -1,18 +1,20 @@
 import express from 'express';
 import * as categoryControllers from './category.controller.js';
 import subCategoryRouter from '../subCategory/subCategory.router.js';
+import { validation } from '../../middleware/validation.js';
+import { categorySchema, updateCategory, getCategory } from './category.validation.js';
 const categoryRouter = express.Router();
 
 categoryRouter.use('/:categoryId/subcategories', subCategoryRouter);
 categoryRouter
     .route('/')
-    .post(categoryControllers.createCategory)
+    .post(validation(categorySchema), categoryControllers.createCategory)
     .get(categoryControllers.getAllCategories);
 
 categoryRouter
     .route('/:id')
-    .get(categoryControllers.getCategory)
-    .delete(categoryControllers.deleteCategory)
-    .put(categoryControllers.updateCategory);
+    .get(validation(getCategory), categoryControllers.getCategory)
+    .delete(validation(getCategory), categoryControllers.deleteCategory)
+    .put(validation(updateCategory), categoryControllers.updateCategory);
 
 export default categoryRouter;
