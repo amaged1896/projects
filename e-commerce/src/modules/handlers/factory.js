@@ -4,7 +4,8 @@ import { AppError } from './../../utlis/AppError.js';
 
 const createOne = (model) => {
     return catchAsyncError(async (req, res, next) => {
-        req.body.image = req.file.filename;
+        req.body[req.file.fieldname] = req.file.filename;
+        console.log(req.body);
         let result = new model(req.body);
         await result.save();
         if (!result) return next(new AppError('Invalid category', 404));

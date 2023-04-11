@@ -13,6 +13,7 @@ const app = express();
 const port = 8000;
 
 // middleware
+app.use(express.static('uploads'));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api/v1/categories', categoryRouter);
