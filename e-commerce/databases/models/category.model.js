@@ -20,4 +20,9 @@ categorySchema.pre('save', function (next) {
     next();
 });
 
+categorySchema.post('init', (doc) => {
+    console.log(doc);
+    doc.image = process.env.BASE_URL + "/category/" + doc.image;
+});
+
 export const categoryModel = mongoose.model('category', categorySchema);
