@@ -2,8 +2,7 @@ import multer from "multer";
 import { AppError } from "../utlis/AppError.js";
 
 
-export const uploadSingleFile = (fieldName, folderName) => {
-
+const options = (folderName) => {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, `uploads/${folderName}`);
@@ -21,30 +20,9 @@ export const uploadSingleFile = (fieldName, folderName) => {
         }
     }
 
-    const upload = multer({ storage, fileFilter });
-    return upload.single(fieldName);
+    return multer({ storage, fileFilter });
 };
 
-export const uploadMultipleFiles = (arrOfFields, folderName) => {
+export const uploadSingleFile = (fieldName, folderName) => options(folderName).single(fieldName);
 
-    const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, `uploads/${folderName}`);
-        },
-        filename: function (req, file, cb) {
-            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-            cb(null, uniqueSuffix + "-" + file.originalname);
-        }
-    });
-
-    function fileFilter(req, file, cb) {
-        if (file.mimetype.startsWith('image')) {
-            cb(null, true);
-        } else {
-            cb(new AppError('images only supported', 400), false);
-        }
-    }
-
-    const upload = multer({ storage, fileFilter });
-    return upload.fields(arrOfFields);
-};
+export const uploadMultipleFiles = (arrOfFields, folderName) => options(folderName).fields(arrOfFields);
