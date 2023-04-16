@@ -54,3 +54,27 @@ function displayMeals(arr) {
     rowData.innerHTML = box;
 }
 searchByName("");
+
+async function getCategories() {
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/categories.php`);
+    response = await response.json();
+    console.log(response.categories);
+    displayCategories(response.categories);
+}
+
+function displayCategories(arr) {
+    let box = '';
+    for (let i = 0; i < arr.length; i++) {
+        box += `
+                <div class="col-md-3">
+                    <div class="meal position-relative overflow-hidden rounded-2">
+                        <img class="w-100" src="${arr[i].strCategoryThumb}" alt="">
+                        <div class="meal-layer position-absolute text-center text-black p-2">
+                         <h3 class="text-center text-black">${arr[i].strCategory}</h3>
+                         <p>${arr[i].strCategoryDescription.split(" ").slice(0, 20).join(" ")}</p>
+                        </div> 
+                    </div>
+                </div>`;
+    }
+    rowData.innerHTML = box;
+}
