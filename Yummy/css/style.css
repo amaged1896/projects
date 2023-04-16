@@ -33,3 +33,11 @@ i {
 .meal:hover .meal-layer{
 top: 0;
 }
+
+.cursor-pointer { 
+    cursor: pointer;
+}
+
+.links li {
+    cursor: pointer;
+}
