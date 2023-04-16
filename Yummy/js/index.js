@@ -99,3 +99,26 @@ function displayArea(arr) {
     }
     rowData.innerHTML = box;
 }
+
+async function getIngredient() {
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`);
+    response = await response.json();
+    console.log(response);
+    displayIngredient(response.meals.slice(0, 20));
+}
+
+
+function displayIngredient(arr) {
+    let box = '';
+    for (let i = 0; i < arr.length; i++) {
+        box += `
+                <div class="col-md-3">
+                    <div class="text-center text-white rounded-2 cursor-pointer">
+                            <i class="fa-solid fa-drumstick-bite fa-4x  text-center"></i>
+                            <h3 class="text-center">${arr[i].strIngredient}</h3>
+                            <p>${arr[i].strDescription.split(' ').slice(0, 20).join(' ')}</p>
+                    </div>
+                </div>`;
+    }
+    rowData.innerHTML = box;
+}
