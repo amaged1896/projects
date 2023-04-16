@@ -43,11 +43,11 @@ function displayMeals(arr) {
     for (let i = 0; i < arr.length; i++) {
         box += `
                 <div class="col-md-3">
-                    <div class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
+                    <div onclick="getMealDetails('${arr[i].idMeal}')" class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
                         <img class="w-100" src="${arr[i].strMealThumb}" alt="">
                         <div class="meal-layer position-absolute d-flex justify-content-center align-items-center p-2">
                          <h3 class="text-center text-black">${arr[i].strMeal}</h3>
-                        </div> 
+                        </div>
                     </div>
                 </div>`;
     }
@@ -72,7 +72,7 @@ function displayCategories(arr) {
                         <div class="meal-layer position-absolute text-center text-black p-2">
                          <h3 class="text-center text-black">${arr[i].strCategory}</h3>
                          <p>${arr[i].strCategoryDescription.split(" ").slice(0, 20).join(" ")}</p>
-                        </div> 
+                        </div>
                     </div>
                 </div>`;
     }
@@ -140,4 +140,51 @@ async function getIngredientsMeals(ingredients) {
     response = await response.json();
     console.log(response);
     displayMeals(response.meals);
+}
+
+async function getMealDetails(mealId) {
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
+    response = await response.json();
+    console.log(response.meals[0]);
+    displayMealDetails(response.meals[0]);
+}
+
+function displayMealDetails(meal) {
+
+    let ingredients = ``;
+    for (let i = 1; i <= 20; i++) {
+        if (meal[`strIngredient${i}`]) {
+            ingredients += `<li class="alert alert-info m-2 p-1">${meal[`strMeasure${i}`]} ${meal[`strIngredient${i}`]}</li>`;
+        }
+    }
+    console.log(ingredients);
+    let tags = meal.strTags?.split(',');
+    if (!tags) tags = [];
+    let tagsStr = ``;
+    for (let i = 0; i < tags.length; i++) {
+        tagsStr += `<li class="alert alert-danger m-2 p-1">${tags[i]}</li>`;
+    }
+    
+    let box = `
+    <div class="col-md-4">
+              <img src="${meal.strMealThumb}" alt="" class="w-100 rounded-3">
+              <h2>${meal.strMeal}</h2>
+            </div>
+            <div class="col-md-8">
+              <h2>Instructions</h2>
+              <p>${meal.strInstructions}</p>
+              <h3><span class="fw-bolder">Area : </span> ${meal.strArea}</h3>
+              <h3><span class="fw-bolder">Category : </span> ${meal.strCategory}</h3>
+              <h3>Recipes :</h3>
+              <ul class="list-unstyled d-flex g-3 flex-wrap">
+              ${ingredients}
+              </ul>
+              <h3>Tags : </h3>
+              <ul class="list-unstyled d-flex g-3 flex-wrap">
+              ${tagsStr}
+              </ul>
+              <a href="${meal.strSource}"  target="_blank" class="btn btn-success">Source</a>
+              <a href="${meal.strYoutube}" target="_blank"  class="btn btn-danger">Youtube</a>
+              </div>`;
+    rowData.innerHTML = box;
 }

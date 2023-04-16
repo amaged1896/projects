@@ -41,3 +41,7 @@ top: 0;
 .links li {
     cursor: pointer;
 }
+
+.alert {
+    width: fit-content;
+}
