@@ -59,7 +59,7 @@ async function getCategories() {
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/categories.php`);
     response = await response.json();
     console.log(response.categories);
-    displayCategories(response.categories);
+    displayCategories(response.categories.slice(0, 12));
 }
 
 function displayCategories(arr) {
@@ -67,7 +67,7 @@ function displayCategories(arr) {
     for (let i = 0; i < arr.length; i++) {
         box += `
                 <div class="col-md-3">
-                    <div class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
+                    <div onclick="getCategoryMeals('${arr[i].strCategory}')" class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
                         <img class="w-100" src="${arr[i].strCategoryThumb}" alt="">
                         <div class="meal-layer position-absolute text-center text-black p-2">
                          <h3 class="text-center text-black">${arr[i].strCategory}</h3>
@@ -91,7 +91,7 @@ function displayArea(arr) {
     for (let i = 0; i < arr.length; i++) {
         box += `
                 <div class="col-md-3">
-                    <div class="meal text-center rounded-2 cursor-pointer">
+                    <div onclick="getAreaMeals('${arr[i].strArea}')" class="meal text-center rounded-2 cursor-pointer">
                             <i class="fa-solid fa-house-laptop fa-4x text-center"></i>
                             <h3 class="text-center text-white">${arr[i].strArea}</h3>
                     </div>
@@ -113,7 +113,7 @@ function displayIngredient(arr) {
     for (let i = 0; i < arr.length; i++) {
         box += `
                 <div class="col-md-3">
-                    <div class="text-center text-white rounded-2 cursor-pointer">
+                    <div onclick="getIngredientsMeals('${arr[i].strIngredient}')" class="text-center text-white rounded-2 cursor-pointer">
                             <i class="fa-solid fa-drumstick-bite fa-4x  text-center"></i>
                             <h3 class="text-center">${arr[i].strIngredient}</h3>
                             <p>${arr[i].strDescription.split(' ').slice(0, 20).join(' ')}</p>
@@ -121,4 +121,23 @@ function displayIngredient(arr) {
                 </div>`;
     }
     rowData.innerHTML = box;
+}
+
+async function getCategoryMeals(category) {
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+    response = await response.json();
+    console.log(response);
+    displayMeals(response.meals);
+}
+async function getAreaMeals(area) {
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`);
+    response = await response.json();
+    console.log(response);
+    displayMeals(response.meals);
+}
+async function getIngredientsMeals(ingredients) {
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredients}`);
+    response = await response.json();
+    console.log(response);
+    displayMeals(response.meals);
 }
