@@ -1,4 +1,5 @@
 let rowData = document.getElementById('rowData');
+let searchContainer = document.getElementById('searchContainer');
 
 function openSideNav() {
     $(".side-nav-menu").animate({ left: 0 }, 500);
@@ -29,14 +30,7 @@ $(".side-nav-menu i.open-close-icon").click(() => {
     }
 });
 
-async function searchByName(term) {
-    let response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`
-    );
-    response = await response.json();
-    console.log(response.meals);
-    displayMeals(response.meals);
-}
+
 
 function displayMeals(arr) {
     let box = '';
@@ -56,6 +50,7 @@ function displayMeals(arr) {
 searchByName("");
 
 async function getCategories() {
+    searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/categories.php`);
     response = await response.json();
     console.log(response.categories);
@@ -80,6 +75,7 @@ function displayCategories(arr) {
 }
 
 async function getArea() {
+    searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?a=list`);
     response = await response.json();
     console.log(response);
@@ -101,6 +97,7 @@ function displayArea(arr) {
 }
 
 async function getIngredient() {
+    searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`);
     response = await response.json();
     console.log(response);
@@ -109,6 +106,7 @@ async function getIngredient() {
 
 
 function displayIngredient(arr) {
+
     let box = '';
     for (let i = 0; i < arr.length; i++) {
         box += `
@@ -143,6 +141,7 @@ async function getIngredientsMeals(ingredients) {
 }
 
 async function getMealDetails(mealId) {
+    searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
     response = await response.json();
     console.log(response.meals[0]);
@@ -164,7 +163,7 @@ function displayMealDetails(meal) {
     for (let i = 0; i < tags.length; i++) {
         tagsStr += `<li class="alert alert-danger m-2 p-1">${tags[i]}</li>`;
     }
-    
+
     let box = `
     <div class="col-md-4">
               <img src="${meal.strMealThumb}" alt="" class="w-100 rounded-3">
@@ -187,4 +186,35 @@ function displayMealDetails(meal) {
               <a href="${meal.strYoutube}" target="_blank"  class="btn btn-danger">Youtube</a>
               </div>`;
     rowData.innerHTML = box;
+}
+
+function showSearchInput() {
+    searchContainer.innerHTML = `
+    <div class="row py-4 ">
+        <div class="col-md-6">
+          <input onkeyup="searchByName(this.value)" type="text" class="form-control text-white bg-transparent" placeholder="Search By Name" />
+        </div>
+        <div class="col-md-6">
+          <input onkeyup="searchByFirstLetter(this.value)" maxlength="1" type="text" class="form-control text-white bg-transparent" placeholder="Search By First Letter" />
+        </div>
+      </div>
+      `;
+    // hide data 
+    rowData.innerHTML = "";
+}
+
+async function searchByName(term) {
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`);
+    response = await response.json();
+    console.log(response.meals);
+    response.meals ? displayMeals(response.meals) : displayMeals([]);
+}
+
+async function searchByFirstLetter(term) {
+    term = term.charAt(0);
+    term == "" ? term = "a" : "";
+    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${term}`);
+    response = await response.json();
+    console.log(response.meals);
+    response.meals ? displayMeals(response.meals) : displayMeals([]);
 }
