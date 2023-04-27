@@ -1,5 +1,14 @@
 let rowData = document.getElementById('rowData');
 let searchContainer = document.getElementById('searchContainer');
+let submitBtn;
+
+$(document).ready(() => {
+    searchByName("").then(() => {
+        $(".loading-screen").fadeOut(500);
+        $("body").css("overflow", "visible");
+        $(".inner-loading-screen").fadeOut(300);
+    });
+});
 
 function openSideNav() {
     $(".side-nav-menu").animate({ left: 0 }, 500);
@@ -30,8 +39,6 @@ $(".side-nav-menu i.open-close-icon").click(() => {
     }
 });
 
-
-
 function displayMeals(arr) {
     let box = '';
     for (let i = 0; i < arr.length; i++) {
@@ -47,14 +54,17 @@ function displayMeals(arr) {
     }
     rowData.innerHTML = box;
 }
-searchByName("");
 
 async function getCategories() {
+    closeSideNav();
+    rowData.innerHTML = "";
+    $(".inner-loading-screen").fadeIn(300);
     searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/categories.php`);
     response = await response.json();
     console.log(response.categories);
     displayCategories(response.categories.slice(0, 12));
+    $(".inner-loading-screen").fadeOut(300);
 }
 
 function displayCategories(arr) {
@@ -75,11 +85,15 @@ function displayCategories(arr) {
 }
 
 async function getArea() {
+    closeSideNav();
+    rowData.innerHTML = "";
+    $(".inner-loading-screen").fadeIn(300);
     searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?a=list`);
     response = await response.json();
     console.log(response);
     displayArea(response.meals);
+    $(".inner-loading-screen").fadeOut(300);
 }
 
 function displayArea(arr) {
@@ -97,11 +111,15 @@ function displayArea(arr) {
 }
 
 async function getIngredient() {
+    closeSideNav();
+    rowData.innerHTML = "";
+    $(".inner-loading-screen").fadeIn(300);
     searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`);
     response = await response.json();
     console.log(response);
     displayIngredient(response.meals.slice(0, 20));
+    $(".inner-loading-screen").fadeOut(300);
 }
 
 
@@ -122,30 +140,46 @@ function displayIngredient(arr) {
 }
 
 async function getCategoryMeals(category) {
+    closeSideNav();
+    rowData.innerHTML = "";
+    $(".inner-loading-screen").fadeIn(300);
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
     response = await response.json();
     console.log(response);
     displayMeals(response.meals);
+    $(".inner-loading-screen").fadeOut(300);
 }
 async function getAreaMeals(area) {
+    closeSideNav();
+    rowData.innerHTML = "";
+    $(".inner-loading-screen").fadeIn(300);
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`);
     response = await response.json();
     console.log(response);
     displayMeals(response.meals);
+    $(".inner-loading-screen").fadeOut(300);
 }
 async function getIngredientsMeals(ingredients) {
+    closeSideNav();
+    rowData.innerHTML = "";
+    $(".inner-loading-screen").fadeIn(300);
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredients}`);
     response = await response.json();
     console.log(response);
     displayMeals(response.meals);
+    $(".inner-loading-screen").fadeOut(300);
 }
 
 async function getMealDetails(mealId) {
+    closeSideNav();
+    rowData.innerHTML = "";
+    $(".inner-loading-screen").fadeIn(300);
     searchContainer.innerHTML = "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
     response = await response.json();
     console.log(response.meals[0]);
     displayMealDetails(response.meals[0]);
+    $(".inner-loading-screen").fadeOut(300);
 }
 
 function displayMealDetails(meal) {
@@ -156,7 +190,6 @@ function displayMealDetails(meal) {
             ingredients += `<li class="alert alert-info m-2 p-1">${meal[`strMeasure${i}`]} ${meal[`strIngredient${i}`]}</li>`;
         }
     }
-    console.log(ingredients);
     let tags = meal.strTags?.split(',');
     if (!tags) tags = [];
     let tagsStr = ``;
@@ -189,6 +222,8 @@ function displayMealDetails(meal) {
 }
 
 function showSearchInput() {
+    closeSideNav();
+    rowData.innerHTML = "";
     searchContainer.innerHTML = `
     <div class="row py-4 ">
         <div class="col-md-6">
@@ -204,22 +239,28 @@ function showSearchInput() {
 }
 
 async function searchByName(term) {
+    $(".inner-loading-screen").fadeIn(300);
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`);
     response = await response.json();
     console.log(response.meals);
     response.meals ? displayMeals(response.meals) : displayMeals([]);
+    $(".inner-loading-screen").fadeOut(300);
 }
 
 async function searchByFirstLetter(term) {
+    $(".inner-loading-screen").fadeIn(300);
     term = term.charAt(0);
     term == "" ? term = "a" : "";
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${term}`);
     response = await response.json();
     console.log(response.meals);
     response.meals ? displayMeals(response.meals) : displayMeals([]);
+    $(".inner-loading-screen").fadeOut(300);
 }
 
 function showContacts() {
+    closeSideNav();
+    searchContainer.innerHTML = "";
     rowData.innerHTML = `<div class="contact min-vh-100 d-flex justify-content-center align-items-center">
     <div class="container w-75 text-center">
         <div class="row g-4">
@@ -298,64 +339,66 @@ let ageInputTouched = false;
 let passwordInputTouched = false;
 let repasswordInputTouched = false;
 
-
-
-
 function inputsValidation() {
     if (nameInputTouched) {
         if (nameValidation()) {
             document.getElementById("nameAlert").classList.replace("d-block", "d-none");
-
+            document.getElementById("nameInput").classList.add("is-valid");
         } else {
             document.getElementById("nameAlert").classList.replace("d-none", "d-block");
-
+            document.getElementById("nameInput").classList.remove("is-invalid");
         }
     }
     if (emailInputTouched) {
 
         if (emailValidation()) {
             document.getElementById("emailAlert").classList.replace("d-block", "d-none");
+            document.getElementById("emailInput").classList.add("is-valid");
         } else {
             document.getElementById("emailAlert").classList.replace("d-none", "d-block");
-
+            document.getElementById("emailInput").classList.remove("is-invalid");
         }
     }
 
     if (phoneInputTouched) {
         if (phoneValidation()) {
             document.getElementById("phoneAlert").classList.replace("d-block", "d-none");
+            document.getElementById("phoneInput").classList.add("is-valid");
         } else {
             document.getElementById("phoneAlert").classList.replace("d-none", "d-block");
-
+            document.getElementById("phoneInput").classList.remove("is-invalid");
         }
     }
 
     if (ageInputTouched) {
         if (ageValidation()) {
             document.getElementById("ageAlert").classList.replace("d-block", "d-none");
+            document.getElementById("ageInput").classList.add("is-valid");
         } else {
             document.getElementById("ageAlert").classList.replace("d-none", "d-block");
-
+            document.getElementById("ageInput").classList.remove("is-invalid");
         }
     }
 
     if (passwordInputTouched) {
         if (passwordValidation()) {
             document.getElementById("passwordAlert").classList.replace("d-block", "d-none");
+            document.getElementById("passwordInput").classList.add("is-valid");
         } else {
             document.getElementById("passwordAlert").classList.replace("d-none", "d-block");
-
+            document.getElementById("passwordInput").classList.remove("is-invalid");
         }
     }
     if (repasswordInputTouched) {
         if (repasswordValidation()) {
             document.getElementById("repasswordAlert").classList.replace("d-block", "d-none");
+            document.getElementById("repasswordInput").classList.add("is-valid");
         } else {
             document.getElementById("repasswordAlert").classList.replace("d-none", "d-block");
-
+            document.getElementById("repasswordInput").classList.remove("is-invalid");
         }
     }
-
+    
 
     if (nameValidation() &&
         emailValidation() &&
@@ -364,8 +407,10 @@ function inputsValidation() {
         passwordValidation() &&
         repasswordValidation()) {
         submitBtn.removeAttribute("disabled");
+        submitBtn.classList.replace("btn-outline-danger", "btn-outline-success");
     } else {
         submitBtn.setAttribute("disabled", true);
+        submitBtn.classList.replace("btn-outline-success", "btn-outline-danger");
     }
 }
 
