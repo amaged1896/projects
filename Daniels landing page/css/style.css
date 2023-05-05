@@ -58,7 +58,7 @@ nav {
 /* head section */
 .head-section {
     background-image: url(../img/bg.jpg);
-    background-position: center center;
+    background-position: 100% 100%;
     background-size: cover;
     height: 100vh;
 }
@@ -836,7 +836,7 @@ footer p {
 
 
 .test {
-    width: 30%;
+    width: 100%;
     margin: auto;
 }
 
